@@ -1,0 +1,53 @@
+from Esfera import Esfera
+from Vetor import Vetor
+
+class Gerenciador_Colisao:
+
+  def colisao_entre_esferas(self, esfera_atual, esfera): 
+    direcao_impacto = esfera_atual.posicao - esfera.posicao #pega o vetor entre os centros das esferas
+    if (direcao_impacto.modulo() < 2*Esfera.raio): #se a distância for menor q 2*raio, as esferas estão colidindo
+          
+      #calcula as componentes da velocidade de cada esfera na direção do impacto e na direção perpendicular
+
+      velocidade_esfera_atual_imp = esfera_atual.velocidade.projecao_ortogonal(direcao_impacto)
+      velocidade_esfera_atual_perp = esfera_atual.velocidade - velocidade_esfera_atual_imp
+
+      velocidade_esfera_imp = esfera.velocidade.projecao_ortogonal(direcao_impacto)
+      velocidade_esfera_perp = esfera.velocidade - velocidade_esfera_imp
+
+      #as esferas trocam as componentes na direção do impacto, mas mantém as na direção perpendicular
+
+      esfera_atual.velocidade = velocidade_esfera_imp + velocidade_esfera_atual_perp
+      esfera.velocidade = velocidade_esfera_atual_imp + velocidade_esfera_perp
+
+      #tira uma esfera de dentro da outra, para evitar problemas com muitas colisões consecutivas
+
+      #uma esfera precisa ser tirada da outra de forma que a distância entre as duas seja maior ou igual ao dobro do raio, ou seja
+
+      sobreposicao = direcao_impacto.versor()*(2*Esfera.raio - direcao_impacto.modulo())
+
+      esfera_atual.posicao += sobreposicao*(1/2)
+      esfera.posicao -= sobreposicao*(1/2)
+
+  def colisao_esfera_cubo(self, esfera, lado_cubo, centro_cubo = Vetor(0, 0, 0)):
+    
+    if esfera.posicao.x - Esfera.raio <= centro_cubo.x - lado_cubo/2:
+      esfera.posicao.x = centro_cubo.x - lado_cubo/2 + Esfera.raio 
+      esfera.velocidade.x *= -1
+    elif esfera.posicao.x + Esfera.raio >= centro_cubo.x + lado_cubo/2:
+      esfera.posicao.x = centro_cubo.x + lado_cubo/2 - Esfera.raio
+      esfera.velocidade.x *= -1
+
+    if esfera.posicao.y - Esfera.raio <= centro_cubo.y - lado_cubo/2:
+      esfera.posicao.y = centro_cubo.y - lado_cubo/2 + Esfera.raio 
+      esfera.velocidade.y *= -1
+    elif esfera.posicao.y + Esfera.raio >= centro_cubo.y + lado_cubo/2:
+      esfera.posicao.y = centro_cubo.y + lado_cubo/2 - Esfera.raio
+      esfera.velocidade.y *= -1
+
+    if esfera.posicao.z - Esfera.raio <= centro_cubo.z - lado_cubo/2:
+      esfera.posicao.z = centro_cubo.z - lado_cubo/2 + Esfera.raio 
+      esfera.velocidade.z *= -1
+    elif esfera.posicao.z + Esfera.raio >= centro_cubo.z + lado_cubo/2:
+      esfera.posicao.z = centro_cubo.z + lado_cubo/2 - Esfera.raio
+      esfera.velocidade.z *= -1

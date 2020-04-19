@@ -31,3 +31,6 @@ class Vetor:
   def projecao_ortogonal(self, outro): 
     return outro*(self*outro/(outro*outro))
 
+  def como_tupla(self):
+    return (self.x, self.y, self.z)
+
