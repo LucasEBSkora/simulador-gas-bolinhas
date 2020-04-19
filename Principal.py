@@ -18,11 +18,11 @@ class Principal :
 
 
   def __init__(self):
-    self.esferas = [Esfera(Vetor(0, 0, 0), Vetor(5, 3, 2)), Esfera(Vetor(0,1,0), Vetor(0, 3, 1))]
+    self.esferas = [Esfera(Vetor(0, 0, 0), Vetor(0.5, 0.3, 0.2)), Esfera(Vetor(0,1,0), Vetor(0.0, 0.3, 0.1)), Esfera(Vetor(0,2,0), Vetor(0.0, 0.0, 1.0)), Esfera(Vetor(-1,-1,0), Vetor(2, 2.0, -0.0))]
     self.parar = False
     self.relogio = Relogio()
     self.dimensoes_janela = (1000, 700)
-    self.lado_cubo = 10
+    self.lado_cubo = 1
 
     self.cubo = Cubo(self.lado_cubo, (1, 1, 1))
     self.gerenciador_colisao = Gerenciador_Colisao()
@@ -38,18 +38,19 @@ class Principal :
     glEnable(GL_LIGHTING)
     glEnable(GL_LIGHT0)
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.2, 0.2, 0.2, 1.0))
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.8, 0.8, 0.8, 1.0))
-    glLightfv(GL_LIGHT0, GL_SPECULAR, 0.5, 0.5, 0.5, 1.0)
-    glLightfv(GL_LIGHT0, GL_POSITION, (3, 0, 0, 1.0))    
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.8, 0.8, 0.8, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.25, 0.25, 0.25, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, 0.75, 0.75, 0.75, 1.0)
+    glLightfv(GL_LIGHT0, GL_POSITION, (-self.lado_cubo*2, -self.lado_cubo*2, 0, 1.0))    
 
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.1,0.1,0.1,1.0))
+    #glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.1,0.1,0.1,1.0))
 
     
 
     gluPerspective(45, (self.dimensoes_janela[0]/self.dimensoes_janela[1]), 0.1, 50.0)
-    glTranslatef(4, .0, -25)
-    glRotate(-10, 0, 1, 0)
+    glTranslatef(0, .0, -2.5*self.lado_cubo)
+    glRotate(-85, 1, 0, 0)
+    glRotate(-15, 0, 0, 1)
 
 
   def executar(self):
@@ -82,7 +83,7 @@ class Principal :
 
       for esfera in copia_lista :
         self.gerenciador_colisao.colisao_entre_esferas(esfera_atual, esfera)
-        print("vo chora")
+
       self.gerenciador_colisao.colisao_esfera_cubo(esfera_atual, self.lado_cubo)
   
     
@@ -92,10 +93,22 @@ class Principal :
 
   def renderizar_ui(self) :
     self.cubo.renderizar()
+    glBegin(GL_LINES)
+    glVertex3fv((0, 0, 0))
+    glVertex3fv((-self.lado_cubo*2, -self.lado_cubo*2, 0))
+    #glVertex3fv((0, 0, 0))
+    #glVertex3fv((self.lado_cubo*2, 0, 0))
+    #glVertex3fv((0, 0, 0))
+    #glVertex3fv((0, self.lado_cubo*2, 0))
+    # glVertex3fv((0, 0, 0))
+    # glVertex3fv((0, 0, self.lado_cubo*2))
+    glEnd()
 
   def renderizar_esferas(self) :
+    Esfera.inicializar_renderizacao()
     for esfera in self.esferas:
       esfera.renderizar()
+    Esfera.terminar_renderizacao()
 
 principal = Principal()
 

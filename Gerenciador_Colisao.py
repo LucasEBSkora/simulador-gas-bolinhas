@@ -30,24 +30,13 @@ class Gerenciador_Colisao:
       esfera.posicao -= sobreposicao*(1/2)
 
   def colisao_esfera_cubo(self, esfera, lado_cubo, centro_cubo = Vetor(0, 0, 0)):
-    
-    if esfera.posicao.x - Esfera.raio <= centro_cubo.x - lado_cubo/2:
-      esfera.posicao.x = centro_cubo.x - lado_cubo/2 + Esfera.raio 
-      esfera.velocidade.x *= -1
-    elif esfera.posicao.x + Esfera.raio >= centro_cubo.x + lado_cubo/2:
-      esfera.posicao.x = centro_cubo.x + lado_cubo/2 - Esfera.raio
-      esfera.velocidade.x *= -1
 
-    if esfera.posicao.y - Esfera.raio <= centro_cubo.y - lado_cubo/2:
-      esfera.posicao.y = centro_cubo.y - lado_cubo/2 + Esfera.raio 
-      esfera.velocidade.y *= -1
-    elif esfera.posicao.y + Esfera.raio >= centro_cubo.y + lado_cubo/2:
-      esfera.posicao.y = centro_cubo.y + lado_cubo/2 - Esfera.raio
-      esfera.velocidade.y *= -1
-
-    if esfera.posicao.z - Esfera.raio <= centro_cubo.z - lado_cubo/2:
-      esfera.posicao.z = centro_cubo.z - lado_cubo/2 + Esfera.raio 
-      esfera.velocidade.z *= -1
-    elif esfera.posicao.z + Esfera.raio >= centro_cubo.z + lado_cubo/2:
-      esfera.posicao.z = centro_cubo.z + lado_cubo/2 - Esfera.raio
-      esfera.velocidade.z *= -1
+    i = 0
+    while (i < 3):
+      if esfera.posicao.coords[i] - Esfera.raio <= centro_cubo.coords[i] - lado_cubo/2:
+        esfera.posicao.coords[i] = centro_cubo.coords[i] - lado_cubo/2 + Esfera.raio 
+        esfera.velocidade.coords[i] *= -1
+      elif esfera.posicao.coords[i] + Esfera.raio >= centro_cubo.coords[i] + lado_cubo/2:
+        esfera.posicao.coords[i] = centro_cubo.coords[i] + lado_cubo/2 - Esfera.raio
+        esfera.velocidade.coords[i] *= -1
+      i += 1

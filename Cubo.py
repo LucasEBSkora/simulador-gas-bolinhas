@@ -1,4 +1,4 @@
-from OpenGL.GL import glBegin, glEnd, glColor3fv, glVertex3fv, GL_LINES, glNormal3fv, glMaterialfv, GL_FRONT, GL_AMBIENT_AND_DIFFUSE, GL_SPECULAR, GL_SHININESS, glMateriali, glColor
+from OpenGL.GL import glBegin, glEnd, glColor3fv, glVertex3fv, GL_LINES, glNormal3fv, glMaterialfv, GL_FRONT, GL_AMBIENT_AND_DIFFUSE, GL_SPECULAR, GL_SHININESS, glMateriali, GL_DIFFUSE
 
 class Cubo:
   cor = (1, 1, 1)
@@ -35,7 +35,8 @@ class Cubo:
     glBegin(GL_LINES)
 
     glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, self.cor)
-    glMaterialfv(GL_FRONT, GL_SPECULAR, (1.0, 1.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1.0, 1.0, 1.0, 1.0))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, 1.0, 1.0, 1.0, 1.0)
     glMateriali(GL_FRONT, GL_SHININESS, 128)
     
     for aresta in Cubo.arestas:
