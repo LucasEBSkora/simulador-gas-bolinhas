@@ -5,25 +5,24 @@ class Vetor:
   def __init__(self, x, y, z):
     self.coords = [x, y, z]
 
-  def x(self, arg = None):
-    if not arg is None:
-      self.coords[0] = arg
-    else: 
+  def x(self, arg):
+    self.coords[0] = arg
+    
+  def x(self):
       return self.coords[0]
 
-  def y(self, arg = None):
-    if not arg is None:
-      self.coords[1] = arg
-    else: 
+  def y(self, arg):
+    self.coords[1] = arg
+    
+  def y(self):
       return self.coords[1]
 
-  def z(self, arg = None):
-    if not arg is None:
-      self.coords[2] = arg
-    else: 
+  def z(self, arg):
+    self.coords[2] = arg
+    
+  def z(self):
       return self.coords[2]
 
-    
 
   def __str__(self):
     return "(" + str(self.coords[0]) + "," + str(self.coords[1]) + str(",") + str(self.coords[2]) + ")"

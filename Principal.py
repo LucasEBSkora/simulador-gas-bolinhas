@@ -11,50 +11,115 @@ from Vetor import Vetor
 from Cubo import Cubo
 from Gerenciador_Colisao import Gerenciador_Colisao
 
-from math import sqrt
+import sys
+import random
+from math import sqrt, floor, pi, sin, cos
+from time import time
 
 class Principal :
   
 
 
-  def __init__(self):
-    self.esferas = [Esfera(Vetor(0, 0, 0), Vetor(0.5, 0.3, 0.2)), Esfera(Vetor(0,1,0), Vetor(0.0, 0.3, 0.1)), Esfera(Vetor(0,2,0), Vetor(0.0, 0.0, 1.0)), Esfera(Vetor(-1,-1,0), Vetor(2, 2.0, -0.0))]
+  def __init__(self): 
+    
+
+
+    self.esferas = []
     self.parar = False
     self.relogio = Relogio()
     self.dimensoes_janela = (1000, 700)
     self.lado_cubo = 1
 
-    self.cubo = Cubo(self.lado_cubo, (1, 1, 1))
-    self.gerenciador_colisao = Gerenciador_Colisao()
-    pygame.init()
-    
-    
-    
+    self.porcentagem_volume_ocupado = 0.01
 
+    self.n_esferas = floor(((self.lado_cubo**3)*self.porcentagem_volume_ocupado) / ((4./3.)*pi*Esfera.raio**3))
+
+    random.seed(time())
+
+    #consideraremos que a energia cinética é medida em "unidades de energia", e que a massa de cada esfera é dada por 2 "unidades de massa", de forma que a equação
+    #da energia cinética seja
+
+    #E_c = m*v²/2 = 2(u.m.)*v²(m/s)/2 = v² (u.e.)
+
+    #A energia cinética total do sistema é entre 0.05 e 0.2 vezes o número de esfera, em "unidades de energia"
+    energia_cinetica_total = random.uniform(0.05, 0.2)* self.n_esferas 
+
+    limite = self.lado_cubo/2 - Esfera.raio # maior módulo possível da posição inicial de uma esfera sem começar colidindo com paredes
+
+    i = 0
+    while (i < self.n_esferas):
+      
+      kx = random.uniform(0.0, 0.9*energia_cinetica_total)
+      energia_cinetica_total -= kx
+
+      ky = random.uniform(0.0, 0.9*energia_cinetica_total)
+      energia_cinetica_total -= ky
+
+      kz = random.uniform(0.0, 0.9*energia_cinetica_total)
+      energia_cinetica_total -= kz
+
+      self.esferas.append(Esfera(
+        #sorteia uma posição dentro do cubo
+        Vetor(random.uniform(-self.lado_cubo/2, self.lado_cubo/2), random.uniform(-self.lado_cubo/2, self.lado_cubo/2), random.uniform(-self.lado_cubo/2, self.lado_cubo/2)),
+        #usa a energia cinética sorteada pra pegar uma velocidade
+        Vetor(sqrt(kx), sqrt(ky), sqrt(kz))
+      ))
+      i += 1
+
+    # i = -1
+    # j = -1
+    # k = -1
+
+    # while i < 2:
+    #   j = -1
+    #   while j < 2:
+    #     k = -1
+    #     while k < 2:
+    #       self.esferas.append(
+    #         Esfera(Vetor(i*limite, j*limite, k*limite), Vetor(0, 0, 0))
+    #       )
+    #       k += 1
+    #     j += 1
+    #   i += 1
+
+    # self.esferas.append(Esfera(Vetor(0.,0.,0.), Vetor(0.,0.,0.)))
+
+    self.cubo = Cubo(self.lado_cubo, (1, 1, 1))
+
+    pygame.init()
 
     pygame.display.set_mode(self.dimensoes_janela, DOUBLEBUF|OPENGL)
-    #glutInit(sys.argv)
+    glutInit(sys.argv)
 
+    glMatrixMode(GL_MODELVIEW)
+    glShadeModel(GL_SMOOTH)
     glEnable(GL_LIGHTING)
+    glEnable(GL_DEPTH_TEST)
     glEnable(GL_LIGHT0)
 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, (0.8, 0.8, 0.8, 1.0))
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, (0.25, 0.25, 0.25, 1.0))
-    glLightfv(GL_LIGHT0, GL_SPECULAR, 0.75, 0.75, 0.75, 1.0)
-    glLightfv(GL_LIGHT0, GL_POSITION, (-self.lado_cubo*2, -self.lado_cubo*2, 0, 1.0))    
+    luz_ambiente = 0.1
+    luz_difusa = 0.20
+    luz_especular = 0.1
 
-    #glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.1,0.1,0.1,1.0))
-
+    #glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (1.0,1.0,1.0,1.0))
+    glLightfv(GL_LIGHT0, GL_AMBIENT, (luz_ambiente, luz_ambiente, luz_ambiente, 1.0))
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, (luz_difusa, luz_difusa, luz_difusa, 1.0))
+    glLightfv(GL_LIGHT0, GL_SPECULAR, (luz_especular, luz_especular, luz_especular, 1.0))
     
+    glLightfv(GL_LIGHT0, GL_POSITION, (-self.lado_cubo*0.8, 0, -self.lado_cubo*4.9, 1))    
+
+
+
 
     gluPerspective(45, (self.dimensoes_janela[0]/self.dimensoes_janela[1]), 0.1, 50.0)
     glTranslatef(0, .0, -2.5*self.lado_cubo)
-    glRotate(-85, 1, 0, 0)
-    glRotate(-15, 0, 0, 1)
+    #glRotate(-85, 1, 0, 0)
+    glRotate(-15, 0, 1, 0)
 
 
   def executar(self):
     self.relogio.reiniciar()
+    # theta = 0
     while (not self.parar):
       
       glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT) #limpa o buffer para começar novo frame
@@ -64,12 +129,31 @@ class Principal :
       self.renderizar_esferas()
       pygame.display.flip()
       pygame.time.wait(10)
-      
+      # posicao_luz = Vetor(sin(theta), 0, cos(theta))*self.lado_cubo*5
+      # print(posicao_luz)
+      # glLightfv(GL_LIGHT0, GL_POSITION, posicao_luz.coords)          
+
       #parar se a tela foi fechada
       for event in pygame.event.get():
         if event.type == pygame.QUIT:
           pygame.quit()
           self.parar = True
+        # elif event.type == pygame.KEYDOWN:
+        #   if event.key == pygame.K_LEFT:
+        #     theta -= 0.1
+        #   elif event.key == pygame.K_RIGHT:
+        #     theta += 0.1
+        
+        # elif event.type == pygame.KEYDOWN:
+        #   if event.key == pygame.K_LEFT:
+        #     glRotate(-10, 0, 1, 0)
+        #   elif event.key == pygame.K_RIGHT:
+        #     glRotate(10, 0, 1, 0)
+        #   elif event.key == pygame.K_UP:
+        #     glRotate(10, 1, 0, 0)
+        #   elif event.key == pygame.K_DOWN:
+        #     glRotate(-10, 1, 0, 0)
+            
 
   def checar_colisoes(self):
     copia_lista = self.esferas.copy()
@@ -82,9 +166,9 @@ class Principal :
       esfera_atual = copia_lista.pop(0)
 
       for esfera in copia_lista :
-        self.gerenciador_colisao.colisao_entre_esferas(esfera_atual, esfera)
+        Gerenciador_Colisao.colisao_entre_esferas(esfera_atual, esfera)
 
-      self.gerenciador_colisao.colisao_esfera_cubo(esfera_atual, self.lado_cubo)
+      Gerenciador_Colisao.colisao_esfera_cubo(esfera_atual, self.lado_cubo)
   
     
   def mover_esferas(self, dt) :
@@ -94,14 +178,6 @@ class Principal :
   def renderizar_ui(self) :
     self.cubo.renderizar()
     glBegin(GL_LINES)
-    glVertex3fv((0, 0, 0))
-    glVertex3fv((-self.lado_cubo*2, -self.lado_cubo*2, 0))
-    #glVertex3fv((0, 0, 0))
-    #glVertex3fv((self.lado_cubo*2, 0, 0))
-    #glVertex3fv((0, 0, 0))
-    #glVertex3fv((0, self.lado_cubo*2, 0))
-    # glVertex3fv((0, 0, 0))
-    # glVertex3fv((0, 0, self.lado_cubo*2))
     glEnd()
 
   def renderizar_esferas(self) :

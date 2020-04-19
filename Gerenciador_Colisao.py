@@ -3,7 +3,7 @@ from Vetor import Vetor
 
 class Gerenciador_Colisao:
 
-  def colisao_entre_esferas(self, esfera_atual, esfera): 
+  def colisao_entre_esferas(esfera_atual, esfera): 
     direcao_impacto = esfera_atual.posicao - esfera.posicao #pega o vetor entre os centros das esferas
     if (direcao_impacto.modulo() < 2*Esfera.raio): #se a distância for menor q 2*raio, as esferas estão colidindo
           
@@ -29,7 +29,7 @@ class Gerenciador_Colisao:
       esfera_atual.posicao += sobreposicao*(1/2)
       esfera.posicao -= sobreposicao*(1/2)
 
-  def colisao_esfera_cubo(self, esfera, lado_cubo, centro_cubo = Vetor(0, 0, 0)):
+  def colisao_esfera_cubo(esfera, lado_cubo, centro_cubo = Vetor(0, 0, 0)):
 
     i = 0
     while (i < 3):

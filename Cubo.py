@@ -1,7 +1,6 @@
 from OpenGL.GL import glBegin, glEnd, glColor3fv, glVertex3fv, GL_LINES, glNormal3fv, glMaterialfv, GL_FRONT, GL_AMBIENT_AND_DIFFUSE, GL_SPECULAR, GL_SHININESS, glMateriali, GL_DIFFUSE
 
 class Cubo:
-  cor = (1, 1, 1)
   arestas = [
     (0, 1),
     (1, 2),
