@@ -5,25 +5,24 @@ class Vetor:
   def __init__(self, x, y, z):
     self.coords = [x, y, z]
 
-  def x(self, arg):
-    self.coords[0] = arg
-    
-  def x(self):
+  def x(self, arg = None):
+    if arg is None:
       return self.coords[0]
+    else:
+      self.coords[0] = arg
 
-  def y(self, arg):
-    self.coords[1] = arg
-    
-  def y(self):
+  def y(self, arg = None):
+    if arg is None:
       return self.coords[1]
-
-  def z(self, arg):
-    self.coords[2] = arg
+    else:
+      self.coords[1] = arg
     
-  def z(self):
+  def z(self, arg = None):
+    if arg is None:
       return self.coords[2]
-
-
+    else:
+      self.coords[2] = arg
+  
   def __str__(self):
     return "(" + str(self.coords[0]) + "," + str(self.coords[1]) + str(",") + str(self.coords[2]) + ")"
   
@@ -51,3 +50,5 @@ class Vetor:
   def como_tupla(self):
     return (self.coords[0], self.coords[1], self.coords[2])
 
+  def multiplicar_coords_uma_a_uma(self, outro):
+    return Vetor(self.coords[0]*outro.coords[0], self.coords[1]*outro.coords[1], self.coords[2]*outro.coords[2])

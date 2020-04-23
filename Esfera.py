@@ -7,7 +7,7 @@ from Vetor import Vetor
 class Esfera:
 
   raio = 0.05
-  passo_angular = pi/6
+  passo_angular = pi/5
   cor = (0.3, 0.3, 0.3, 1)
 
   def __init__(self, pos, vel):

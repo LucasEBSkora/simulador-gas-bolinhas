@@ -30,13 +30,16 @@ class Gerenciador_Colisao:
       esfera.posicao -= sobreposicao*(1/2)
 
   def colisao_esfera_cubo(esfera, lado_cubo, centro_cubo = Vetor(0, 0, 0)):
-
     i = 0
     while (i < 3):
       if esfera.posicao.coords[i] - Esfera.raio <= centro_cubo.coords[i] - lado_cubo/2:
         esfera.posicao.coords[i] = centro_cubo.coords[i] - lado_cubo/2 + Esfera.raio 
         esfera.velocidade.coords[i] *= -1
+        return 2*abs(esfera.velocidade.coords[i])
       elif esfera.posicao.coords[i] + Esfera.raio >= centro_cubo.coords[i] + lado_cubo/2:
         esfera.posicao.coords[i] = centro_cubo.coords[i] + lado_cubo/2 - Esfera.raio
         esfera.velocidade.coords[i] *= -1
+        return 2*abs(esfera.velocidade.coords[i])
       i += 1
+    return 0
+  
