@@ -59,13 +59,13 @@ class Principal :
     i = 0
     while (i < self.n_esferas):
       
-      kx = random.uniform(0.0, 0.9*energia_cinetica_total)
+      kx = random.uniform(0.0, 0.3*energia_cinetica_total)
       energia_cinetica_total -= kx
 
-      ky = random.uniform(0.0, 0.9*energia_cinetica_total)
+      ky = random.uniform(0.0, 0.3*energia_cinetica_total)
       energia_cinetica_total -= ky
 
-      kz = random.uniform(0.0, 0.9*energia_cinetica_total)
+      kz = random.uniform(0.0, 0.3*energia_cinetica_total)
       energia_cinetica_total -= kz
 
       self.esferas.append(Esfera(
@@ -164,8 +164,8 @@ class Principal :
     self.cubo.renderizar()
     
     textos = [
-      "K  = " + "{:.10f}".format(self.K_total*Vetor(1,1,1)) + " u.e.",
-      "Vm = " + "{:.10f}".format(self.velocidade_media.modulo()) + " m/s",
+      "Kt = " + "{:.10f}".format(self.K_total*Vetor(1,1,1)) + " u.e.",
+      "Km = " + "{:.10f}".format(self.K_total*Vetor(1,1,1)*(1/self.n_esferas)) + " u.e.",
       "Kx = " + "{:.10f}".format(self.K_total.x()) + " u.e.",
       "Kx = " + "{:.10f}".format(self.K_total.x()) + " u.e.",
       "Ky = " + "{:.10f}".format(self.K_total.y()) + " u.e.",
@@ -184,17 +184,14 @@ class Principal :
 
   def calcular_grandezas(self):
     self.K_total = Vetor(0, 0, 0)
-    self.velocidade_media = Vetor(0, 0, 0)
-    media_modulo_velocidade = 0
-    
+    celeridade_media_direcional = 0
 
     for esfera in self.esferas:
       self.K_total += esfera.velocidade.multiplicar_coords_uma_a_uma(esfera.velocidade)*0.5
-      self.velocidade_media += esfera.velocidade
-      media_modulo_velocidade += esfera.velocidade.modulo()
+      celeridade_media_direcional += (abs(esfera.velocidade.x()) + abs(esfera.velocidade.y()) + abs(esfera.velocidade.z()))/3
 
-    self.velocidade_media *= 1/self.n_esferas
-    media_modulo_velocidade *= 1/self.n_esferas
+    celeridade_media_direcional *= 1/self.n_esferas
+    
     # usando a equação 19-21 do Halliday volume 2, temos
     # Pi = n*M*Vrms²/(3V). Como V = L³ = 1m³, e n*M*Vrms²é 2*K, Pi = 2*K/3V
     self.pressao_ideal = self.K_total*Vetor(1,1,1)*(2/3)
@@ -202,7 +199,21 @@ class Principal :
     #como Pr = F/A e F = dP/dt, Pr =  dP/(a*dt), onde P é o momento linear das paredes.
     self.pressao = self.modulo_momento_linear_transferido_paredes/(self.tempo_passado*6)
 
-    self.n_colisoes_por_segundo_area_ideal = sqrt(self.n_esferas*6*(self.K_total*Vetor(1,1,1)))
+    # vx = sqrt(self.K_total*Vetor(1,1,1)*2/3)/self.n_esferas
+    
+    # vx = self.velocidade_media.modulo()/sqrt(3)
+    
+    # vx = celeridade_media/3
+    
+    # vx = 0
+    # for v in self.velocidade_media.coords:
+    #   vx += abs(v)/3
+    
+    vx = 0
+    for v in soma_celeridade_vetorial.coords:
+      vx += abs(v)/3
+
+    self.n_colisoes_por_segundo_area_ideal = (self.n_esferas*vx/(2*self.lado_cubo))
 
     self.n_colisoes_por_segundo_area = self.n_colisoes/(self.tempo_passado*6) #a área superficial de um cubo é 6*l² = 6m², nesse caso.
 
