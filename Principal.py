@@ -30,8 +30,7 @@ class Principal :
     self.relogio = Relogio()
     self.relogio_benchmarking = Relogio()
     self.dimensoes_janela = (1000, 700)
-    self.porcentagem_volume_ocupado = 0.050
-    # Esfera.passo_angular = pi/5
+    self.porcentagem_volume_ocupado = 0.010
 
     Esfera.set_N_divisoes(5)
 
@@ -68,7 +67,7 @@ class Principal :
       if ponto[1] > maior_y:
         maior_y = ponto[1]
 
-    self.distribuicao_simulada = Grafico(self.pontos_distribuicao_maxwell, (0.6, 0.4), (-0.9, -0.35, 0), (0.6/sqrt(self.energia_cinetica_total*2), 0.25/maior_y))
+    self.distribuicao_simulada = Grafico(self.pontos_distribuicao_maxwell, (0.6, 0.4), (-0.9, -0.35, 0), (0.6/sqrt(self.energia_cinetica_total*2), 0.15/maior_y))
 
 
     self.pontos_histograma = [[0,0]]
@@ -286,10 +285,10 @@ class Principal :
     self.n_colisoes_por_segundo_area = self.n_colisoes/(self.tempo_passado*6) #a área superficial de um cubo é 6*l² = 6m², nesse caso.
 
   def renderizar_esferas(self) :
-    # Esfera.inicializar_renderizacao()
+    Esfera.inicializar_renderizacao()
     for esfera in self.esferas:
       esfera.renderizar()
-    # Esfera.terminar_renderizacao()
+    Esfera.terminar_renderizacao()
 
 principal = Principal()
 
