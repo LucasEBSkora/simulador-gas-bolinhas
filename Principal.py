@@ -28,9 +28,12 @@ class Principal :
     self.esferas = []
     self.parar = False
     self.relogio = Relogio()
+    self.relogio_benchmarking = Relogio()
     self.dimensoes_janela = (1000, 700)
-    self.porcentagem_volume_ocupado = 0.100
-    Esfera.passo_angular = pi/2
+    self.porcentagem_volume_ocupado = 0.050
+    # Esfera.passo_angular = pi/5
+
+    Esfera.set_N_divisoes(5)
 
     self.tempo_passado = 0
 
@@ -112,8 +115,11 @@ class Principal :
 
     pygame.init()
 
-    pygame.display.set_mode(self.dimensoes_janela, DOUBLEBUF|OPENGL)
     glutInit(sys.argv)
+
+    pygame.display.set_mode(self.dimensoes_janela, DOUBLEBUF| HWSURFACE | OPENGL)
+    pygame.display.set_caption("gás de bolinhas")
+    pygame.display.gl_set_attribute(GL_ACCELERATED_VISUAL, True)
 
     glMatrixMode(GL_MODELVIEW)
     glShadeModel(GL_SMOOTH)
@@ -155,13 +161,26 @@ class Principal :
     while (not self.parar):
       dt = self.relogio.tempo_passado()
       self.tempo_passado += dt
-
+      
       glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT) #limpa o buffer para começar novo frame
+      
+      print(" ")
+      self.relogio_benchmarking.reiniciar()
       self.mover_esferas(dt)
+      print("tempo mover:")
+      print(self.relogio_benchmarking.tempo_passado())
       self.checar_colisoes()
+      print("tempo checar:")
+      print(self.relogio_benchmarking.tempo_passado())
       self.calcular_grandezas()
+      print("tempo calcular:")
+      print(self.relogio_benchmarking.tempo_passado())
       self.renderizar_ui()
-      # self.renderizar_esferas()
+      print("tempo renderizar ui:")
+      print(self.relogio_benchmarking.tempo_passado())
+      self.renderizar_esferas()
+      print("tempo renderizar esferas:")
+      print(self.relogio_benchmarking.tempo_passado())
       pygame.display.flip()
       pygame.time.wait(10)
 
@@ -197,12 +216,11 @@ class Principal :
       esfera.mover(dt)
 
   def renderizar_texto(self, texto, posicao_texto, fonte, cor = (1., 1., 1.)):
-    glColor(*cor)
+    # glColor(*cor)
     glRasterPos2f(*posicao_texto)
     for char in texto:
       glutBitmapCharacter(fonte, ord(char))
-
-
+  
   def renderizar_ui(self) :
     self.cubo.renderizar()
 
@@ -267,14 +285,11 @@ class Principal :
 
     self.n_colisoes_por_segundo_area = self.n_colisoes/(self.tempo_passado*6) #a área superficial de um cubo é 6*l² = 6m², nesse caso.
 
-
-
-
   def renderizar_esferas(self) :
-    Esfera.inicializar_renderizacao()
+    # Esfera.inicializar_renderizacao()
     for esfera in self.esferas:
       esfera.renderizar()
-    Esfera.terminar_renderizacao()
+    # Esfera.terminar_renderizacao()
 
 principal = Principal()
 
