@@ -30,7 +30,7 @@ class Principal :
     self.relogio = Relogio()
     self.relogio_benchmarking = Relogio()
     self.dimensoes_janela = (1000, 700)
-    self.porcentagem_volume_ocupado = 0.010
+    self.porcentagem_volume_ocupado = 0.05
 
     Esfera.set_N_divisoes(5)
 

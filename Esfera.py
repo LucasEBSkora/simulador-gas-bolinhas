@@ -1,5 +1,4 @@
-from OpenGL.GL import glBegin, glEnd, glColor3fv, glVertex3fv, GL_QUADS, glNormal3fv, glMaterialfv, GL_FRONT, GL_AMBIENT_AND_DIFFUSE, GL_SPECULAR, GL_SHININESS, glMateriali, GL_DIFFUSE, glPushMatrix, glPopMatrix, glTranslatef
-from OpenGL.GLUT import glutSolidSphere
+from OpenGL.GL import glBegin, glEnd, glColor3fv, glVertex3fv, GL_QUADS, glNormal3fv, glMaterialfv, GL_AMBIENT_AND_DIFFUSE, GL_SPECULAR, GL_SHININESS, glMateriali, GL_FRONT
 from math import  sin, cos, pi
 
 from Vetor import Vetor
@@ -56,36 +55,6 @@ class Esfera:
     glEnd()
 
   def renderizar(self):
-
-    # glPushMatrix()
-    # glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, Esfera.cor)
-    # glMaterialfv(GL_FRONT, GL_SPECULAR, 0.4, 0.4, 0.4, 0.2)
-    # glMateriali(GL_FRONT, GL_SHININESS, 128)
-    # glTranslatef(self.posicao.coords[0], self.posicao.coords[1], self.posicao.coords[2])
-    # glutSolidSphere(self.raio, 5, 5)
-    # glPopMatrix()
-
-    # i = 0
-    # j = 0
-    # glPushMatrix()
-    # glBegin(GL_QUADS)
-    # glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, Esfera.cor)
-    # glMaterialfv(GL_FRONT, GL_SPECULAR, 0.4, 0.4, 0.4, 0.2)
-    # glMateriali(GL_FRONT, GL_SHININESS, 128)
-    # glTranslatef(*self.posicao.coords)
-    # while i < len(Esfera.normais_esfera):
-    #   glNormal3fv(Esfera.normais_esfera[i])
-    #   i += 1
-    #   glVertex3fv(Esfera.pontos_esfera[j])
-    #   j += 1
-    #   glVertex3fv(Esfera.pontos_esfera[j])
-    #   j += 1
-    #   glVertex3fv(Esfera.pontos_esfera[j])
-    #   j += 1
-    #   glVertex3fv(Esfera.pontos_esfera[j])
-    #   j += 1
-    # glEnd()
-    # glPopMatrix()
 
     i = 0
     j = 0
