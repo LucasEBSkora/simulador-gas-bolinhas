@@ -29,7 +29,7 @@ class Principal :
     self.parar = False
     self.relogio = Relogio()
     self.relogio_benchmarking = Relogio()
-    self.dimensoes_janela = (1000, 700)
+    self.dimensoes_janela = (1080, 720)
     self.porcentagem_volume_ocupado = 0.05
 
     Esfera.set_N_divisoes(5)
@@ -227,13 +227,13 @@ class Principal :
       "Kt = " + "{:.10f}".format(self.energia_cinetica_total) + " u.e.",
       "Km = " + "{:.10f}".format(self.energia_cinetica_total*(1/self.n_esferas)) + " u.e.",
       "Kx = " + "{:.10f}".format(self.K_total.x()) + " u.e.",
-      "Kx = " + "{:.10f}".format(self.K_total.x()) + " u.e.",
       "Ky = " + "{:.10f}".format(self.K_total.y()) + " u.e.",
       "Kz = " + "{:.10f}".format(self.K_total.z()) + " u.e.",
       "Pi = " + "{:.10f}".format(self.pressao_ideal) + " u.p.",
       "P  = " + "{:.10f}".format(self.pressao) + " u.p.",
       "Ni = " + "{:.10f}".format(self.n_colisoes_por_segundo_area_ideal) + " colisoes/(s*m^2)",
       "N  = " + "{:.10f}".format(self.n_colisoes_por_segundo_area) + " colisoes/(s*m^2)",
+      " ",
       " ",
       "Distribuicao de Maxwell-Boltzmann:"
       " ",
